@@ -7,12 +7,18 @@ type BuildInfo struct {
 	BuildDate string `json:"buildDate"`
 }
 
-// Package-level vars targeted by ldflags injection.
-var Version string
-var Commit string
-var BuildDate string
+// These variables are set at build time via -ldflags.
+var (
+	Version   = "dev"
+	Commit    = "unknown"
+	BuildDate = "unknown"
+)
 
-// Info returns a BuildInfo populated from the package-level vars.
+// Info returns the current build information.
 func Info() BuildInfo {
-	return BuildInfo{Version: Version, Commit: Commit, BuildDate: BuildDate}
+	return BuildInfo{
+		Version:   Version,
+		Commit:    Commit,
+		BuildDate: BuildDate,
+	}
 }
