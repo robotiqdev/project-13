@@ -9,8 +9,15 @@ import (
 // New returns an http.Handler with all routes registered.
 func New() http.Handler {
 	mux := http.NewServeMux()
+	// /health is intentionally public and requires no authentication for load balancer access
 	mux.HandleFunc("/health", handler.HealthHandler)
 	mux.HandleFunc("/version", handler.VersionHandler)
 	mux.HandleFunc("/", handler.NotFoundHandler)
 	return mux
+}
+
+// NewRouter creates and returns a configured HTTP router.
+// /health is intentionally public and requires no authentication for load balancer access.
+func NewRouter() http.Handler {
+	return New()
 }
