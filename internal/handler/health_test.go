@@ -157,7 +157,7 @@ func TestHealthHandlerResponseIsMinimal(t *testing.T) {
 		t.Fatalf("GET /health body is not valid JSON: %v", err)
 	}
 
-	for _, forbidden := range []string{"version", "commit", "buildDate"} {
+	for _, forbidden := range []string{"version", "commit", "build_date"} {
 		if _, present := got[forbidden]; present {
 			t.Errorf("GET /health response must not contain field %q (keep health minimal)", forbidden)
 		}
@@ -237,8 +237,8 @@ func TestVersionHandlerResponseContainsBuildDateField(t *testing.T) {
 		t.Fatalf("GET /version body is not valid JSON: %v", err)
 	}
 
-	if _, ok := got["buildDate"]; !ok {
-		t.Error("GET /version response missing 'buildDate' field")
+	if _, ok := got["build_date"]; !ok {
+		t.Error("GET /version response missing 'build_date' field")
 	}
 }
 
@@ -274,8 +274,8 @@ func TestVersionHandlerReflectsVersionPackageVars(t *testing.T) {
 	if got["commit"] != version.Commit {
 		t.Errorf("GET /version 'commit' = %q; want %q", got["commit"], version.Commit)
 	}
-	if got["buildDate"] != version.BuildDate {
-		t.Errorf("GET /version 'buildDate' = %q; want %q", got["buildDate"], version.BuildDate)
+	if got["build_date"] != version.BuildDate {
+		t.Errorf("GET /version 'build_date' = %q; want %q", got["build_date"], version.BuildDate)
 	}
 }
 
@@ -322,7 +322,7 @@ func TestVersionHandlerEmptyVarsReturnEmptyStrings(t *testing.T) {
 		t.Fatalf("GET /version body is not valid JSON: %v", err)
 	}
 
-	for _, field := range []string{"version", "commit", "buildDate"} {
+	for _, field := range []string{"version", "commit", "build_date"} {
 		if _, ok := got[field]; !ok {
 			t.Errorf("GET /version missing field %q even when empty", field)
 		}
@@ -352,7 +352,7 @@ func TestHealthAndVersionEndpointsAreIndependent(t *testing.T) {
 	if err := json.NewDecoder(wV.Body).Decode(&ver); err != nil {
 		t.Fatalf("/version body is not valid JSON: %v", err)
 	}
-	for _, field := range []string{"version", "commit", "buildDate"} {
+	for _, field := range []string{"version", "commit", "build_date"} {
 		if _, ok := ver[field]; !ok {
 			t.Errorf("/version missing field %q", field)
 		}

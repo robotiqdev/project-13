@@ -3,7 +3,7 @@ package version_test
 import (
 	"testing"
 
-	"github.com/app/service/internal/version"
+	"github.com/robotiqdev/project-13/internal/version"
 )
 
 // TestDefaultVarsAreEmptyStrings verifies that the package-level vars

@@ -4,7 +4,7 @@ package version
 type BuildInfo struct {
 	Version   string `json:"version"`
 	Commit    string `json:"commit"`
-	BuildDate string `json:"buildDate"`
+	BuildDate string `json:"build_date"`
 }
 
 // These variables are set at build time via -ldflags.

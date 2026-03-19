@@ -3,8 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-
-	"github.com/robotiqdev/project-13/internal/version"
 )
 
 // HealthResponse is the JSON response returned by HealthHandler.
@@ -34,15 +32,3 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(healthResponseBytes)
 }
 
-// VersionHandler handles GET /version requests.
-// It returns full build metadata (version, commit, buildDate) as JSON.
-func VersionHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	info := version.Info()
-	json.NewEncoder(w).Encode(map[string]string{
-		"version":   info.Version,
-		"commit":    info.Commit,
-		"buildDate": info.BuildDate,
-	})
-}

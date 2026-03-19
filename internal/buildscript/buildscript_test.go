@@ -106,7 +106,7 @@ func TestBuildScriptInjectsVersionLdflag(t *testing.T) {
 		t.Fatalf("reading scripts/build.sh: %v", err)
 	}
 	content := string(data)
-	want := "github.com/app/service/internal/version.Version"
+	want := "github.com/robotiqdev/project-13/internal/version.Version"
 	if !strings.Contains(content, want) {
 		t.Errorf("scripts/build.sh does not reference ldflag path %q", want)
 	}
@@ -125,7 +125,7 @@ func TestBuildScriptInjectsCommitLdflag(t *testing.T) {
 		t.Fatalf("reading scripts/build.sh: %v", err)
 	}
 	content := string(data)
-	want := "github.com/app/service/internal/version.Commit"
+	want := "github.com/robotiqdev/project-13/internal/version.Commit"
 	if !strings.Contains(content, want) {
 		t.Errorf("scripts/build.sh does not reference ldflag path %q", want)
 	}
@@ -144,7 +144,7 @@ func TestBuildScriptInjectsBuildDateLdflag(t *testing.T) {
 		t.Fatalf("reading scripts/build.sh: %v", err)
 	}
 	content := string(data)
-	want := "github.com/app/service/internal/version.BuildDate"
+	want := "github.com/robotiqdev/project-13/internal/version.BuildDate"
 	if !strings.Contains(content, want) {
 		t.Errorf("scripts/build.sh does not reference ldflag path %q", want)
 	}
