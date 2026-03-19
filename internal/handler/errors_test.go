@@ -106,6 +106,56 @@ func TestWriteError_DifferentStatusCodes(t *testing.T) {
 	}
 }
 
+// TestMethodNotAllowedHandler verifies that MethodNotAllowedHandler returns 405 with correct JSON body.
+func TestMethodNotAllowedHandler(t *testing.T) {
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rr := httptest.NewRecorder()
+	MethodNotAllowedHandler(rr, req)
+
+	if rr.Code != http.StatusMethodNotAllowed {
+		t.Errorf("expected status %d, got %d", http.StatusMethodNotAllowed, rr.Code)
+	}
+
+	ct := rr.Header().Get("Content-Type")
+	if ct != "application/json" {
+		t.Errorf("expected Content-Type %q, got %q", "application/json", ct)
+	}
+
+	var resp ErrorResponse
+	if err := json.NewDecoder(rr.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response body: %v", err)
+	}
+
+	if resp.Error != "method not allowed" {
+		t.Errorf("expected error %q, got %q", "method not allowed", resp.Error)
+	}
+}
+
+// TestMethodNotAllowedHandler_AnyMethod verifies MethodNotAllowedHandler works regardless of the request method.
+func TestMethodNotAllowedHandler_AnyMethod(t *testing.T) {
+	methods := []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodPatch}
+	for _, method := range methods {
+		t.Run(method, func(t *testing.T) {
+			req := httptest.NewRequest(method, "/some/path", nil)
+			rr := httptest.NewRecorder()
+			MethodNotAllowedHandler(rr, req)
+
+			if rr.Code != http.StatusMethodNotAllowed {
+				t.Errorf("expected status %d, got %d", http.StatusMethodNotAllowed, rr.Code)
+			}
+
+			var resp ErrorResponse
+			if err := json.NewDecoder(rr.Body).Decode(&resp); err != nil {
+				t.Fatalf("failed to decode response body: %v", err)
+			}
+
+			if resp.Error != "method not allowed" {
+				t.Errorf("expected error %q, got %q", "method not allowed", resp.Error)
+			}
+		})
+	}
+}
+
 // TestWriteError_EmptyMessage verifies writeError handles an empty message gracefully.
 func TestWriteError_EmptyMessage(t *testing.T) {
 	rr := httptest.NewRecorder()

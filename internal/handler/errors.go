@@ -15,3 +15,8 @@ func writeError(w http.ResponseWriter, status int, message string) {
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(ErrorResponse{Error: message})
 }
+
+// MethodNotAllowedHandler is a stub — implementation pending TASK-4778.
+func MethodNotAllowedHandler(w http.ResponseWriter, r *http.Request) {
+	panic("not implemented")
+}
