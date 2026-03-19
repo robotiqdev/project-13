@@ -226,7 +226,10 @@ func startServer(t *testing.T, binPath string, addr string) {
 	if err := cmd.Start(); err != nil {
 		t.Fatalf("failed to start server binary: %v", err)
 	}
-	t.Cleanup(func() { _ = cmd.Process.Kill() })
+	t.Cleanup(func() {
+		_ = cmd.Process.Kill()
+		_ = cmd.Wait()
+	})
 
 	// Wait for the server to accept connections.
 	deadline := time.Now().Add(5 * time.Second)
