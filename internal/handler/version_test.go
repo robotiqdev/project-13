@@ -252,3 +252,43 @@ func TestVersionHandler_NonGETMethods_AllReturn405(t *testing.T) {
 		})
 	}
 }
+
+// TestVersionHandler_NonGETMethods_ErrorMessageValue is a table-driven test verifying that POST, PUT, DELETE, PATCH
+// each return 405 with Content-Type application/json and body {"error":"method not allowed"}.
+func TestVersionHandler_NonGETMethods_ErrorMessageValue(t *testing.T) {
+	tests := []struct {
+		method string
+	}{
+		{method: http.MethodPost},
+		{method: http.MethodPut},
+		{method: http.MethodDelete},
+		{method: http.MethodPatch},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.method, func(t *testing.T) {
+			req := httptest.NewRequest(tc.method, "/version", nil)
+			rr := httptest.NewRecorder()
+
+			VersionHandler(rr, req)
+
+			if rr.Code != http.StatusMethodNotAllowed {
+				t.Errorf("method %s: expected status %d, got %d", tc.method, http.StatusMethodNotAllowed, rr.Code)
+			}
+
+			ct := rr.Header().Get("Content-Type")
+			if ct != "application/json" {
+				t.Errorf("method %s: expected Content-Type %q, got %q", tc.method, "application/json", ct)
+			}
+
+			var resp ErrorResponse
+			if err := json.NewDecoder(rr.Body).Decode(&resp); err != nil {
+				t.Fatalf("method %s: failed to decode 405 response body: %v", tc.method, err)
+			}
+
+			if resp.Error != "method not allowed" {
+				t.Errorf("method %s: expected error %q, got %q", tc.method, "method not allowed", resp.Error)
+			}
+		})
+	}
+}
