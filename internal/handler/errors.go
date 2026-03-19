@@ -29,6 +29,7 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 // HealthHandler handles GET /health requests.
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", "GET")
 		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
 		return
 	}
@@ -40,6 +41,7 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 // VersionHandler handles GET /version requests.
 func VersionHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", "GET")
 		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
 		return
 	}
