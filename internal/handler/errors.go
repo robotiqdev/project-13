@@ -16,7 +16,7 @@ func writeError(w http.ResponseWriter, status int, message string) {
 	json.NewEncoder(w).Encode(ErrorResponse{Error: message})
 }
 
-// MethodNotAllowedHandler is a stub — implementation pending TASK-4778.
+// MethodNotAllowedHandler returns a 405 Method Not Allowed JSON response.
 func MethodNotAllowedHandler(w http.ResponseWriter, r *http.Request) {
-	panic("not implemented")
+	writeError(w, http.StatusMethodNotAllowed, "method not allowed")
 }
