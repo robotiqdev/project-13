@@ -23,6 +23,7 @@ func init() {
 // HealthHandler handles health check requests.
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
+		w.Header().Set("Allow", "GET")
 		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
 		return
 	}
